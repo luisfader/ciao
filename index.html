@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ciao, amore! 2 — Corso di italiano</title>
+  <meta name="description" content="Il manuale di italiano di livello intermedio di Roberto Fader: dieci unità da sfogliare, con un test per ogni unità e un esame finale.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Figtree:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2313203a'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='%23e0aa48' font-family='Georgia' font-style='italic'%3Ea!%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+  <header class="topbar"></header>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-cover"><img src="assets/covers/cover.webp" alt="Copertina di Ciao, amore! 2, corso di italiano per stranieri di Roberto Fader" width="640" height="905"></div>
+        <div>
+          <h1>Ciao, amore! <span class="two">2</span></h1>
+          <p class="sub">Corso di italiano per stranieri di Roberto Fader. Dieci unità da Venezia alla Toscana, con un test per ogni unità e un esame finale.</p>
+          <p class="whisper">mi piace l’italiano, ma mi piaci di più tu</p>
+          <div class="hero-actions">
+            <a class="btn" id="continua" href="unit.html?u=1">Inizia dall’unità 1</a>
+            <a class="btn ghost" href="quiz.html?u=finale">Esame finale</a>
+          </div>
+          <div class="hero-stats" id="stats"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="percorso" class="wrap">
+      <div class="percorso-head">
+        <h2>Il percorso</h2>
+        <p>Sfoglia le pagine di ogni unità, ripassa la grammatica e fai il test. Le stelle mostrano il tuo risultato migliore.</p>
+      </div>
+      <div class="path" id="path"></div>
+    </section>
+
+    <section class="prologo">
+      <div class="wrap">
+        <blockquote>
+          <p>In questo lavoro ho riversato quasi tutto ciò che so fare: scrivere, disegnare e comporre musica. In poche parole, questo manuale è stato creato con amore e passione — ed è proprio da qui che nasce il suo nome così particolare.</p>
+          <p>Buono studio e in bocca al lupo.</p>
+          <cite>Roberto Fader, dal Prologo</cite>
+        </blockquote>
+        <div>
+          <h2 class="section-title" style="font-size:34px">Appendice</h2>
+          <ul class="links-list">
+            <li><a href="unit.html?u=appendice#s1">Sull’autore e opere <small>p. 106–107</small></a></li>
+            <li><a href="unit.html?u=appendice#s2">Attività: trova i personaggi <small>p. 108</small></a></li>
+            <li><a href="unit.html?u=appendice#s3">Soluzioni <small>p. 109–111</small></a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site"><div class="wrap"><span>Ciao, amore! 2 · © Roberto Fader</span><span>I progressi restano salvati in questo browser.</span></div></footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/quizzes.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>
