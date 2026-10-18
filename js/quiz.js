@@ -22,12 +22,13 @@
 
   // ---------- audio ----------
   const AUDIO_DIR = 'assets/audio/';
+  const AV = '?v=' + ((document.querySelector('script[src*="quiz.js?v="]') || {}).src || '').split('v=')[1];
   const audioOk = {};           // nome file -> true/false
   let audioOff = false;          // «Non posso ascoltare ora»
   let player = null;
   async function probeAudio(list) {
     const names = [...new Set(list.filter(q => q.audio).map(q => q.audio))].filter(n => !(n in audioOk));
-    await Promise.all(names.map(n => fetch(AUDIO_DIR + n + '.mp3', { method: 'HEAD', cache: 'no-store' })
+    await Promise.all(names.map(n => fetch(AUDIO_DIR + n + '.mp3' + AV, { method: 'HEAD', cache: 'no-store' })
       .then(r => { audioOk[n] = r.ok; }).catch(() => { audioOk[n] = false; })));
   }
   const usable = q => !q.listen || (audioOk[q.audio] && !audioOff);
@@ -36,7 +37,7 @@
     const q = S && S.cur && S.cur.q;
     if (!q || !hasAudio(q)) return;
     if (player) player.pause();
-    player = new Audio(AUDIO_DIR + q.audio + '.mp3');
+    player = new Audio(AUDIO_DIR + q.audio + '.mp3' + AV);
     player.playbackRate = slow ? 0.7 : 1;
     const btn = main.querySelector(slow ? '.say.slow' : '.say.normal');
     if (btn) { btn.classList.add('playing'); player.onended = player.onpause = () => btn.classList.remove('playing'); }
