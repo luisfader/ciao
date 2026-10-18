@@ -20,11 +20,11 @@
         <div class="hero-cover"><img src="assets/covers/cover.webp" alt="Copertina di Ciao, amore! 2, corso di italiano per stranieri di Roberto Fader" width="640" height="905"></div>
         <div>
           <h1>Ciao, amore! <span class="two">2</span></h1>
-          <p class="sub">Corso di italiano per stranieri di Roberto Fader. Dieci unità da Venezia alla Toscana, con un test per ogni unità e un esame finale.</p>
+          <p class="sub">Corso di italiano per stranieri di Roberto Fader. Dieci unità da Venezia alla Toscana: leggi, fai gli esercizi direttamente sulla pagina e chiudi ogni unità con un test.</p>
           <p class="whisper">mi piace l’italiano, ma mi piaci di più tu</p>
           <div class="hero-actions">
             <a class="btn" id="continua" href="unit.html?u=1">Inizia dall’unità 1</a>
-            <a class="btn ghost" href="quiz.html?u=finale">Esame finale</a>
+            <a class="btn ghost" href="#percorso">Vedi il percorso</a>
           </div>
           <div class="hero-stats" id="stats"></div>
         </div>
@@ -34,12 +34,12 @@
     <section id="percorso" class="wrap">
       <div class="percorso-head">
         <h2>Il percorso</h2>
-        <p>Sfoglia le pagine di ogni unità, ripassa la grammatica e fai il test. Le stelle mostrano il tuo risultato migliore.</p>
+        <p>Le unità 1 e 2 sono già disponibili. Le altre arriveranno presto.</p>
       </div>
       <div class="path" id="path"></div>
     </section>
 
-    <section class="prologo">
+    <section class="prologo" id="autore">
       <div class="wrap">
         <blockquote>
           <p>In questo lavoro ho riversato quasi tutto ciò che so fare: scrivere, disegnare e comporre musica. In poche parole, questo manuale è stato creato con amore e passione — ed è proprio da qui che nasce il suo nome così particolare.</p>
@@ -47,11 +47,14 @@
           <cite>Roberto Fader, dal Prologo</cite>
         </blockquote>
         <div>
-          <h2 class="section-title" style="font-size:34px">Appendice</h2>
-          <ul class="links-list">
-            <li><a href="unit.html?u=appendice#s1">Sull’autore e opere <small>p. 106–107</small></a></li>
-            <li><a href="unit.html?u=appendice#s2">Attività: trova i personaggi <small>p. 108</small></a></li>
-            <li><a href="unit.html?u=appendice#s3">Soluzioni <small>p. 109–111</small></a></li>
+          <h2 class="section-title" style="font-size:34px">L’autore</h2>
+          <p>Roberto Fader è un professore di italiano. Oltre all’insegnamento, scrive romanzi in italiano: i loro personaggi sono i protagonisti di questo manuale.</p>
+          <ul class="works">
+            <li><b>Maschera di Venezia</b> Roberto e Natalia tra canali silenziosi e identità nascoste.</li>
+            <li><b>Il treno fantasma</b> Alice fugge su un treno misterioso e Marco si mette sulle sue tracce.</li>
+            <li><b>Ladro di cuori</b> Alessio, giovane ladro, incontra Laura.</li>
+            <li><b>La città triste</b> Franco e Chiara contro il sindaco di Sinea.</li>
+            <li><b>Presentimento</b> · <b>La macchina dei sogni</b> · <b>La squadra invincibile</b></li>
           </ul>
         </div>
       </div>
@@ -62,7 +65,9 @@
 
   <script src="js/data.js"></script>
   <script src="js/quizzes.js"></script>
+  <script src="js/lessons.js"></script>
   <script src="js/common.js"></script>
+  <script src="js/exercises.js"></script>
   <script src="js/home.js"></script>
 </body>
 </html>

@@ -1,10 +1,11 @@
 /* Motore dei test in stile Duolingo (senza audio). */
 (() => {
-  const { units, quizzes, finalExtra, store, icon, shuffle, esc, starsHtml, starsFor, pageImg } = CIAO;
+  const { units, quizzes, finalExtra, store, icon, shuffle, esc, starsHtml, starsFor } = CIAO;
 
   const param = new URLSearchParams(location.search).get('u') || '1';
   const isFinal = param === 'finale';
   const unit = isFinal ? null : units.find(u => String(u.n) === param) || units[0];
+  if ((isFinal && !CIAO.finalAvailable()) || (!isFinal && !unit.available)) { location.replace(isFinal ? 'index.html#percorso' : `unit.html?u=${unit.n}`); return; }
   const HEARTS = 5;
   const PASS = 0.8;
 
@@ -300,7 +301,7 @@
         <p class="lead">${starsHtml(starsFor(acc))}<br>${acc >= 0.95 ? 'Perfetto: non hai sbagliato quasi niente.' : acc >= 0.8 ? 'Ottimo lavoro! Ancora un piccolo sforzo per le tre stelle.' : 'Fatto! Ripassa la grammatica e riprova per migliorare.'}</p>
         ${stats}
         <div class="actions">
-          <a class="btn" href="${nextU ? `unit.html?u=${nextU.n}` : 'quiz.html?u=finale'}">${nextU ? `Vai all’unità ${nextU.n}` : 'Vai all’esame finale'}</a>
+          ${nextU && nextU.available ? `<a class="btn" href="unit.html?u=${nextU.n}">Vai all’unità ${nextU.n}</a>` : `<a class="btn" href="unit.html?u=${unit.n}">Torna all’unità</a>`}
           <button class="btn ghost" id="again">Ripeti il test</button>
           <a class="btn ghost" href="index.html#percorso">Torna al percorso</a>
         </div></div>`;

@@ -2,11 +2,10 @@
 
 Sitio web del manual de italiano **Ciao, amore! 2** de Roberto Fader (nivel intermedio).
 
-- **Portada** con el recorrido de las 10 unidades (estilo Duolingo) y el progreso del alumno.
-- **Página de cada unidad**: las páginas del manual por sección (A, B, C…), con zoom, y un *Ripasso lampo* de la gramática.
-- **Test por unidad** estilo Duolingo, sin audio: elección múltiple, verdadero/falso, emparejar, ordenar palabras, ordenar pasos y escribir la respuesta. 5 corazones, los errores vuelven al final, XP, estrellas y racha de días.
-- **Examen final**: 25 ejercicios de todo el manual (2 por unidad + 5 de repaso general), aprobado con 80 %, desglose por unidad y diploma imprimible.
-- **Apéndice**: sobre el autor, actividad de personajes y soluciones.
+- **Portada** con el recorrido de las 10 unidades y el progreso del alumno. Por ahora solo están abiertas las unidades 1 y 2; las demás y el examen final aparecen como «disponibile presto».
+- **Lección interactiva por unidad**: textos y diálogos con las ilustraciones del manual y, en la misma página, los ejercicios: arrastrar palabras a los huecos, emparejar arrastrando, escribir, elegir dentro de la frase, verdadero/falso, elección múltiple, clasificar en columnas y escritura libre con ejemplo. Cada ejercicio se corrige al momento y tiene «Mostra la soluzione».
+- **Test final de cada unidad** estilo Duolingo, sin audio: 5 corazones, los errores vuelven al final, XP y estrellas.
+- **Examen final** (ya programado): se activa cuando todas las unidades tengan `available: true`.
 
 El progreso se guarda en el navegador del alumno (localStorage); no hace falta registro.
 
@@ -14,16 +13,22 @@ El progreso se guarda en el navegador del alumno (localStorage); no hace falta r
 
 ```
 index.html         portada y recorrido
-unit.html?u=N      unidad N (1–10) · unit.html?u=appendice
-quiz.html?u=N      test de la unidad N · quiz.html?u=finale
-js/data.js         unidades, secciones, páginas y resúmenes de gramática
-js/quizzes.js      preguntas de los tests (editables)
+unit.html?u=N      lección interactiva de la unidad N
+quiz.html?u=N      test final de la unidad N · quiz.html?u=finale
+js/data.js         unidades, secciones y qué unidades están disponibles
+js/lessons.js      contenido y ejercicios de cada lección (editable)
+js/exercises.js    motor de los ejercicios en la página
+js/quizzes.js      preguntas de los tests finales (editables)
 js/quiz.js         motor del test
-assets/pages/      páginas del manual (webp)
+assets/img/        ilustraciones del manual
 assets/covers/     portadas de las unidades
 ```
 
-## Editar preguntas
+## Editar las lecciones
+
+Cada lección está en `js/lessons.js`. Dentro de un ejercicio, `[[respuesta|alternativa]]` crea un hueco (para escribir o arrastrar) y `{{correcta*|incorrecta}}` una elección dentro de la frase. Para abrir una unidad nueva, añade su contenido en `lessons.js` y pon `available: true` en `js/data.js`.
+
+## Editar preguntas del test
 
 Las preguntas están en `js/quizzes.js`, una lista por unidad. Tipos disponibles:
 

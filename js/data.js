@@ -1,10 +1,10 @@
 /* Ciao, amore! 2 — struttura del manuale.
-   Le pagine (p) sono i numeri del file PDF: pagina del manuale + 3. */
+   available: true = unità già pubblicata sul sito. */
 window.CIAO = window.CIAO || {};
 
 CIAO.units = [
   {
-    n: 1, place: 'Venezia', cover: 4,
+    n: 1, place: 'Venezia', cover: 4, available: true,
     temi: ['Presentarsi', 'Parlare di sé', 'La lingua italiana e il mistero di Venezia'],
     tagline: 'venezia è misteriosa, ma il mio cuore ha un solo segreto: tu',
     focus: 'essere, avere e piacere',
@@ -31,7 +31,7 @@ CIAO.units = [
       <p>mi → a me · ti → a te · gli → a lui · le → a lei</p>`
   },
   {
-    n: 2, place: 'Napoli', cover: 14,
+    n: 2, place: 'Napoli', cover: 14, available: true,
     temi: ['L’aspetto fisico', 'Il carattere', 'I segni dello zodiaco', 'Le relazioni personali'],
     tagline: 'sei alto, bello e un po’ misterioso: proprio il mio tipo',
     focus: 'aggettivi e pronomi diretti',
@@ -270,14 +270,4 @@ CIAO.units = [
   }
 ];
 
-CIAO.appendix = {
-  title: 'Appendice',
-  sections: [
-    { id: '1', title: 'Sull’autore e opere', pages: [109, 110] },
-    { id: '2', title: 'Attività: trova i personaggi', pages: [111] },
-    { id: '3', title: 'Soluzioni', pages: [112, 113, 114] }
-  ]
-};
-
-CIAO.pageImg = p => `assets/pages/p${String(p).padStart(3, '0')}.webp`;
-CIAO.manualPage = p => p - 3;
+CIAO.finalAvailable = () => CIAO.units.every(u => u.available);

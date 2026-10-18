@@ -60,9 +60,8 @@ CIAO.topbar = (active) => {
   el.innerHTML = `<div class="wrap">
     <a class="brand" href="index.html">Ciao, amore! <span>2</span></a>
     <nav aria-label="Navigazione principale">
-      <a href="index.html#percorso" class="hide-s">Unità</a>
-      <a href="unit.html?u=appendice" class="hide-s">Soluzioni</a>
-      <a href="quiz.html?u=finale" class="hide-s">Esame finale</a>
+      <a href="index.html#percorso" class="hide-s">Il percorso</a>
+      <a href="index.html#autore" class="hide-s">L’autore</a>
       <span class="xp-pill" title="Punti esperienza">${CIAO.icon.bolt}${xp} XP</span>
     </nav></div>`;
 };
