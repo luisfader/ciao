@@ -574,3 +574,20 @@ body.quiz { background: var(--carta-2); min-height: 100dvh; display: flex; flex-
   :root:not([data-theme="light"]) .gap.filled, :root:not([data-theme="light"]) .qopts button.on { background: #22345a; color: #fff; }
   :root:not([data-theme="light"]) .gapin { color: var(--inchiostro); }
 }
+
+/* ---------- audio nei test ---------- */
+.say-row { display: flex; align-items: center; gap: 12px; margin: 0 0 22px; }
+.say { border: 0; cursor: pointer; display: grid; place-items: center; border-radius: 18px; color: #fff; background: var(--notte-3); box-shadow: 0 4px 0 var(--notte); transition: transform .08s; }
+.say:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--notte); }
+.say.normal { width: 96px; height: 96px; }
+.say.normal svg { width: 52px; height: 52px; }
+.say.slow { width: 60px; height: 60px; background: var(--carta); color: var(--notte-3); box-shadow: 0 4px 0 var(--linea); border: 2px solid var(--linea); }
+.say.slow svg { width: 34px; height: 34px; }
+.say.playing { animation: sayPulse 1s ease-in-out infinite; }
+@keyframes sayPulse { 50% { filter: brightness(1.25); } }
+.say-hint { color: var(--muted); font-size: 15px; }
+.qfoot .hint .linkbtn { font-size: 15px; }
+@media (max-width: 600px) {
+  .say.normal { width: 80px; height: 80px; }
+  .qfoot .hint:has(.linkbtn) { display: block; order: 3; width: 100%; text-align: center; }
+}

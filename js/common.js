@@ -47,6 +47,8 @@ CIAO.icon = {
   check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
   cross: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>',
   laurel: '<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true"><path d="M32 54c-12-2-20-12-20-26M32 54c12-2 20-12 20-26"/><path d="M14 36c-5 0-8-3-9-7 5-1 8 2 9 7zM12 26c-5-1-7-5-7-9 5 0 7 4 7 9zM15 17c-4-2-5-6-4-10 4 1 5 5 4 10zM50 36c5 0 8-3 9-7-5-1-8 2-9 7zM52 26c5-1 7-5 7-9-5 0-7 4-7 9zM49 17c4-2 5-6 4-10-4 1-5 5-4 10z"/><path d="M32 22l3 6 6 .8-4.5 4.3 1.1 6.4L32 36.4l-5.6 3.1 1.1-6.4L23 28.8l6-.8z" fill="currentColor"/></svg>',
+  speaker: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11"/></svg>',
+  turtle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 15c0-4 3-7 7-7s7 3 7 7z" fill="currentColor" fill-opacity=".25"/><path d="M18 13.5c1.5 0 3-1 3-2.5s-1-2-2-2-1.5.8-2 1.5M6 15l-1 3M15 15l1 3M2.5 15h17"/></svg>',
   dot: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="5"/></svg>'
 };
 

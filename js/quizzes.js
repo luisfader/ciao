@@ -6,7 +6,9 @@
    build   { q, a:'frase corretta', alt?:[...], extra:[...] } riordina le parole
    order   { q, a:[passaggi in ordine] }          riordina i passaggi
    match   { q, pairs:[[sinistra, destra], ...] } abbina le coppie
-   Campo facoltativo: tip = spiegazione mostrata dopo la risposta. */
+   Campo facoltativo: tip = spiegazione mostrata dopo la risposta.
+   Ascolto: audio = nome del file in assets/audio/ (senza .mp3), tr = testo registrato,
+   listen = true se l'esercizio si può fare solo ascoltando (si salta se il file manca). */
 window.CIAO = window.CIAO || {};
 
 CIAO.quizzes = {
@@ -27,7 +29,19 @@ CIAO.quizzes = {
     { t: 'match', q: 'Abbina i personaggi famosi', pairs: [['Leonardo da Vinci', 'ha dipinto la Gioconda'], ['Michelangelo', 'ha scolpito il David'], ['Dante Alighieri', 'ha scritto la Divina Commedia'], ['Cristoforo Colombo', 'ha attraversato l’Atlantico']] },
     { t: 'choice', q: 'Il pronome «gli» corrisponde a…', o: ['a lui', 'a lei', 'a me', 'a te'], a: 0 },
     { t: 'build', q: 'Riordina la frase', a: 'Mi piacciono le città antiche', alt: ['Le città antiche mi piacciono'], extra: ['piace', 'il'] },
-    { t: 'build', q: 'Riordina la frase', a: 'Preferisco il tè al caffè', extra: ['piace', 'la'] }
+    { t: 'build', q: 'Riordina la frase', a: 'Preferisco il tè al caffè', extra: ['piace', 'la'] },
+    // ---- ascolto (file in assets/audio/) ----
+    { t: 'type', listen: true, audio: 'u1-01', voice: 'donna', tr: 'Mi chiamo Chiara.', q: 'Ascolta e scrivi', a: ['Mi chiamo Chiara'] },
+    { t: 'type', listen: true, audio: 'u1-02', voice: 'uomo', tr: 'Ho venticinque anni.', q: 'Ascolta e scrivi', a: ['Ho venticinque anni', 'Ho 25 anni'] },
+    { t: 'type', listen: true, audio: 'u1-03', voice: 'donna', tr: 'Mi piacciono i musei.', q: 'Ascolta e scrivi', a: ['Mi piacciono i musei'] },
+    { t: 'type', listen: true, audio: 'u1-04', voice: 'uomo', tr: 'Venezia è misteriosa.', q: 'Ascolta e scrivi', a: ['Venezia è misteriosa'] },
+    { t: 'choice', listen: true, audio: 'u1-05', voice: 'donna', tr: 'Ti piace viaggiare?', q: 'Ascolta e scegli la frase che senti', o: ['Ti piace viaggiare?', 'Mi piace viaggiare.', 'Gli piace viaggiare.'], a: 0 },
+    { t: 'choice', listen: true, audio: 'u1-06', voice: 'uomo', tr: 'Le piacciono i misteri.', q: 'Ascolta e scegli la frase che senti', o: ['Le piacciono i misteri.', 'Gli piacciono i misteri.', 'Le piace il mistero.'], a: 0 },
+    { t: 'build', listen: true, audio: 'u1-07', voice: 'donna', tr: 'Preferisco il tè al caffè.', q: 'Ascolta e riordina', a: 'Preferisco il tè al caffè', extra: ['piace', 'la'] },
+    { t: 'build', listen: true, audio: 'u1-08', voice: 'uomo', tr: 'Le gondole sono un simbolo di Venezia.', q: 'Ascolta e riordina', a: 'Le gondole sono un simbolo di Venezia', extra: ['è', 'barche'] },
+    { t: 'choice', listen: true, audio: 'u1-09', voice: 'dialogo', tr: 'Marco: Buonasera. Mi chiamo Marco. Sono detective.\nFranco: Ciao! Io sono Franco. Ho 25 anni e lavoro come informatico.\nChiara: Salve, mi chiamo Chiara. Sono insegnante di storia.\nRoberto: Piacere! Sono Roberto, argentino. Sono archeologo.\nNatalia: Buonasera… mi chiamo Natalia. Sono veneziana.', q: 'Ascolta le presentazioni: che lavoro fa Chiara?', o: ['È insegnante di storia', 'È detective', 'È informatica', 'È archeologa'], a: 0 },
+    { t: 'choice', listen: true, audio: 'u1-09', q: 'Ascolta le presentazioni: quanti anni ha Franco?', o: ['25', '35', '26', '29'], a: 0 },
+    { t: 'tf', listen: true, audio: 'u1-10', voice: 'donna', tr: 'Venezia si trova nel nord d’Italia. Non ci sono strade, ma canali. Le persone si muovono a piedi o in barca.', ctx: 'Ascolta il testo', s: 'A Venezia le persone si muovono in macchina.', a: false }
   ],
 
   2: [
@@ -48,7 +62,19 @@ CIAO.quizzes = {
     { t: 'tf', ctx: 'Il testo di Alice', s: 'Alice vuole passare meno tempo con Marco.', a: false, tip: 'Alice vorrebbe passare più tempo con lui.' },
     { t: 'match', q: 'Abbina segno e carattere', pairs: [['Ariete', 'attivo e coraggioso'], ['Toro', 'tranquillo e paziente'], ['Gemelli', 'curioso e socievole'], ['Pesci', 'sognatore e creativo']] },
     { t: 'choice', q: 'Che cos’è il caffè sospeso?', o: ['Un caffè pagato per chi non può permetterselo', 'Un caffè bevuto in piedi al bar', 'Un caffè freddo d’estate'], a: 0 },
-    { t: 'build', q: 'Riordina la frase', a: 'Lo guardo con amore', extra: ['Gli', 'di'] }
+    { t: 'build', q: 'Riordina la frase', a: 'Lo guardo con amore', extra: ['Gli', 'di'] },
+    // ---- ascolto (file in assets/audio/) ----
+    { t: 'type', listen: true, audio: 'u2-01', voice: 'donna', tr: 'Luca è alto e magro.', q: 'Ascolta e scrivi', a: ['Luca è alto e magro'] },
+    { t: 'type', listen: true, audio: 'u2-02', voice: 'uomo', tr: 'Ha gli occhi verdi.', q: 'Ascolta e scrivi', a: ['Ha gli occhi verdi'] },
+    { t: 'type', listen: true, audio: 'u2-03', voice: 'donna', tr: 'Porta gli occhiali.', q: 'Ascolta e scrivi', a: ['Porta gli occhiali'] },
+    { t: 'type', listen: true, audio: 'u2-04', voice: 'uomo', tr: 'Il Vesuvio è un vulcano molto famoso.', q: 'Ascolta e scrivi', a: ['Il Vesuvio è un vulcano molto famoso'] },
+    { t: 'choice', listen: true, audio: 'u2-05', voice: 'donna', tr: 'La chiamo stasera.', q: 'Ascolta e scegli la frase che senti', o: ['La chiamo stasera.', 'Le chiamo stasera.', 'Lo chiamo stasera.'], a: 0 },
+    { t: 'choice', listen: true, audio: 'u2-06', voice: 'uomo', tr: 'Li ho visti ieri al bar.', q: 'Ascolta e scegli la frase che senti', o: ['Li ho visti ieri al bar.', 'L’ho visto ieri al bar.', 'Le ho viste ieri al bar.'], a: 0 },
+    { t: 'build', listen: true, audio: 'u2-07', voice: 'donna', tr: 'Io ti aspetto sempre.', q: 'Ascolta e riordina', a: 'Io ti aspetto sempre', extra: ['mi', 'te'] },
+    { t: 'build', listen: true, audio: 'u2-08', voice: 'uomo', tr: 'Paolo non parla molto ed è timido.', q: 'Ascolta e riordina', a: 'Paolo non parla molto ed è timido', extra: ['ha', 'simpatico'] },
+    { t: 'choice', listen: true, audio: 'u2-09', voice: 'dialogo', tr: 'Signora: Scusi… ho visto l’uomo che ha rubato la borsa.\nMarco: Davvero? Com’è?\nSignora: È un giovane alto e magro. Ha i capelli scuri, un po’ lunghi e mossi. Gli occhi sono chiari, tra il verde e l’azzurro. Non porta gli occhiali né la barba. È elegante: camicia bianca e gilet scuro. Sembra molto sicuro di sé.\nMarco: Capisco… grazie. Lo troverò.', q: 'Ascolta la signora: com’è vestito il ladro?', o: ['Camicia bianca e gilet scuro', 'Giacca di pelle nera', 'Maglietta verde e jeans'], a: 0 },
+    { t: 'choice', listen: true, audio: 'u2-09', q: 'Ascolta la signora: com’è il ladro?', o: ['Giovane, alto e magro', 'Anziano e calvo', 'Basso e porta gli occhiali'], a: 0 },
+    { t: 'choice', listen: true, audio: 'u2-10', voice: 'dialogo', tr: 'Fabio: Ti piace Napoli?\nMarco: Sì, mi piace molto. È una città viva… e affascinante.\nFabio: Eh, certo! E poi la pizza è nata qui, a Napoli. Ma dimmi… che cosa fai a Napoli?\nMarco: Sto cercando un ladro.\nFabio: Capisco… allora buona fortuna con il tuo lavoro.', q: 'Ascolta il dialogo: che cosa fa Marco a Napoli?', o: ['Sta cercando un ladro', 'È in vacanza', 'Mangia la pizza con gli amici'], a: 0 }
   ],
 
   3: [

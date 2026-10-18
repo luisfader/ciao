@@ -20,13 +20,42 @@
     .replace(/[’‘`´]/g, "'").replace(/[.,!?¡¿;:«»"“”…]/g, ' ').replace(/\s+/g, ' ').trim();
   const loose = s => norm(s).normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/'/g, '').replace(/\s+/g, ' ').trim();
 
+  // ---------- audio ----------
+  const AUDIO_DIR = 'assets/audio/';
+  const audioOk = {};           // nome file -> true/false
+  let audioOff = false;          // «Non posso ascoltare ora»
+  let player = null;
+  async function probeAudio(list) {
+    const names = [...new Set(list.filter(q => q.audio).map(q => q.audio))].filter(n => !(n in audioOk));
+    await Promise.all(names.map(n => fetch(AUDIO_DIR + n + '.mp3', { method: 'HEAD', cache: 'no-store' })
+      .then(r => { audioOk[n] = r.ok; }).catch(() => { audioOk[n] = false; })));
+  }
+  const usable = q => !q.listen || (audioOk[q.audio] && !audioOff);
+  const hasAudio = q => q.audio && audioOk[q.audio] && !audioOff;
+  function play(slow) {
+    const q = S && S.cur && S.cur.q;
+    if (!q || !hasAudio(q)) return;
+    if (player) player.pause();
+    player = new Audio(AUDIO_DIR + q.audio + '.mp3');
+    player.playbackRate = slow ? 0.7 : 1;
+    const btn = main.querySelector(slow ? '.say.slow' : '.say.normal');
+    if (btn) { btn.classList.add('playing'); player.onended = player.onpause = () => btn.classList.remove('playing'); }
+    player.play().catch(() => {});
+  }
+  const stopAudio = () => { if (player) { player.pause(); player = null; } };
+
   // ---------- costruzione della sessione ----------
   function buildSet() {
-    if (!isFinal) return shuffle(quizzes[unit.n]).map(q => ({ ...q, unit: unit.n }));
+    if (!isFinal) {
+      const all = quizzes[unit.n].filter(usable);
+      const listen = shuffle(all.filter(q => q.listen)).slice(0, 6);
+      const read = shuffle(all.filter(q => !q.listen)).slice(0, listen.length ? 12 : 16);
+      return shuffle(read.concat(listen)).map(q => ({ ...q, unit: unit.n }));
+    }
     const picked = [];
     units.forEach(u => {
       // due esercizi per unità, di tipo diverso quando possibile
-      const pool = shuffle(quizzes[u.n]);
+      const pool = shuffle(quizzes[u.n].filter(usable));
       const first = pool[0];
       const second = pool.find(q => q !== first && q.t !== first.t) || pool[1];
       picked.push({ ...first, unit: u.n }, { ...second, unit: u.n });
@@ -76,7 +105,10 @@
   }
 
   // ---------- schermata iniziale ----------
-  function intro() {
+  async function intro() {
+    main.innerHTML = '<div class="screen"><p class="lead">Un momento…</p></div>';
+    setFoot('idle', { label: 'Inizia', disabled: true });
+    await probeAudio(isFinal ? units.flatMap(u => quizzes[u.n]) : quizzes[unit.n]);
     reset(); paintTop();
     foot.style.display = '';
     window.scrollTo(0, 0);
@@ -92,7 +124,7 @@
       <ul class="intro-list">
         <li>${icon.heart.replace('<svg', '<svg style="fill:var(--rosso)"')}<span>Hai ${HEARTS} cuori: ogni errore ne costa uno.</span></li>
         <li>${icon.dot}<span>Gli esercizi sbagliati tornano alla fine, per riprovarci.</span></li>
-        <li>${icon.dot}<span>Niente audio: leggi, scegli, abbina, riordina e scrivi.</span></li>
+        ${S.queue.some(i => i.q.listen) ? `<li>${icon.speaker}<span>Alcuni esercizi sono da ascoltare: alza il volume. Se non puoi, tocca «Non posso ascoltare ora».</span></li>` : `<li>${icon.dot}<span>Leggi, scegli, abbina, riordina e scrivi.</span></li>`}
         <li>${icon.dot}<span>Con la tastiera: i numeri scelgono le risposte, Invio controlla.</span></li>
       </ul></div>`;
     setFoot('idle', { label: 'Inizia' });
@@ -103,11 +135,13 @@
   function next() {
     if (S.hearts <= 0) return outOfHearts();
     if (!S.queue.length) return finish();
+    stopAudio();
     S.cur = S.queue.shift();
     S.answer = null;
     S.phase = 'answer';
     render(S.cur);
     paintTop();
+    if (hasAudio(S.cur.q)) setTimeout(() => play(false), 250);
   }
 
   const sentence = (s, fill) => {
@@ -116,16 +150,22 @@
     return `<div class="qsentence">${parts.join(`<span class="blank">${fill ? esc(fill) : '&nbsp;'}</span>`)}</div>`;
   };
 
+  const playerHtml = q => hasAudio(q) ? `<div class="say-row">
+      <button class="say normal" type="button" aria-label="Ascolta">${icon.speaker}</button>
+      <button class="say slow" type="button" aria-label="Ascolta lentamente">${icon.turtle}</button>
+      ${q.listen ? '' : '<span class="say-hint">Ascolta e leggi</span>'}</div>` : '';
+
   function render(item) {
     const q = item.q;
     let h = item.retry ? `<div class="qreview">${icon.cross.replace('<svg', '<svg width="16" height="16"')} Errore precedente</div>` : '';
+    const P = playerHtml(q);
     const ready = () => setFoot('idle', { disabled: false });
     setFoot('idle', { disabled: true });
 
     if (q.t === 'choice') {
       const opts = shuffle(q.o.map((text, i) => ({ text, ok: i === q.a })));
       item.opts = opts;
-      h += `<h1 class="qtitle">${esc(q.q)}</h1>${sentence(q.s)}<div class="opts">` +
+      h += `<h1 class="qtitle">${esc(q.q)}</h1>${P}${sentence(q.s)}<div class="opts">` +
         opts.map((o, i) => `<button class="opt" data-i="${i}"><span class="k">${i + 1}</span>${esc(o.text)}</button>`).join('') + '</div>';
       main.innerHTML = h;
       main.querySelectorAll('.opt').forEach(b => b.onclick = () => {
@@ -139,7 +179,7 @@
     }
 
     else if (q.t === 'tf') {
-      h += `<h1 class="qtitle">Vero o falso?</h1>${q.ctx ? `<span class="qctx">${esc(q.ctx)}</span>` : ''}
+      h += `<h1 class="qtitle">Vero o falso?</h1>${q.ctx ? `<span class="qctx">${esc(q.ctx)}</span>` : ''}${P}
         <div class="qsentence">${esc(q.s)}</div>
         <div class="opts tf"><button class="opt" data-v="1"><span class="k">V</span>Vero</button><button class="opt" data-v="0"><span class="k">F</span>Falso</button></div>`;
       main.innerHTML = h;
@@ -152,7 +192,7 @@
     }
 
     else if (q.t === 'type') {
-      h += `<h1 class="qtitle">${esc(q.q)}</h1>${sentence(q.s)}
+      h += `<h1 class="qtitle">${esc(q.q)}</h1>${P}${sentence(q.s)}
         <label class="sr-only" for="typein">La tua risposta</label>
         <input id="typein" class="typein" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Scrivi qui">
         <div class="accents" aria-label="Lettere accentate">${['à', 'è', 'é', 'ì', 'ò', 'ù', '’'].map(c => `<button type="button" data-c="${c}">${c}</button>`).join('')}</div>`;
@@ -173,7 +213,7 @@
       const pieces = isOrder ? q.a.slice() : q.a.split(' ').concat(q.extra || []);
       const tiles = shuffle(pieces.map((w, i) => ({ w, i })));
       const chosen = [];
-      h += `<h1 class="qtitle">${esc(q.q)}</h1>
+      h += `<h1 class="qtitle">${esc(q.q)}</h1>${P}
         <div class="answer-line ${isOrder ? 'list' : ''}" id="line" aria-label="La tua risposta"></div>
         <div class="bank ${isOrder ? 'list' : ''}" id="bank">` +
         tiles.map((t, k) => `<button class="tile" data-k="${k}">${esc(t.w)}</button>`).join('') + '</div>';
@@ -216,6 +256,32 @@
       };
       setFoot('idle', { disabled: true, label: 'Controlla', hint: 'Tocca una voce a sinistra e la sua coppia a destra' });
     }
+
+    if (hasAudio(q)) {
+      main.querySelector('.say.normal').onclick = () => play(false);
+      main.querySelector('.say.slow').onclick = () => play(true);
+      if (q.listen) {
+        hint.innerHTML = '<button class="linkbtn" id="nolisten">Non posso ascoltare ora</button>';
+        $('nolisten').onclick = skipListening;
+      }
+    }
+  }
+
+  function skipListening() {
+    stopAudio();
+    audioOff = true;
+    const pending = [S.cur, ...S.queue].filter(i => i && i.q.listen);
+    const ids = new Set(pending.map(i => i.id));
+    pending.filter(i => !i.retry || true).forEach(i => {
+      if (!ids.has(i.id)) return;
+      ids.delete(i.id);
+      if (S.byUnit[i.q.unit]) S.byUnit[i.q.unit].n--;
+      S.total--;
+    });
+    S.total = Math.max(1, S.total);
+    S.queue = S.queue.filter(i => !i.q.listen);
+    S.cur = null;
+    next();
   }
 
   // ---------- correzione ----------
@@ -269,8 +335,9 @@
       if (q.t === 'match') { S.finished++; }
       else if (!item.retry) { S.queue.push({ ...item, retry: true }); }
       else { S.finished++; }
+      const heard = q.listen && q.t !== 'type' && q.t !== 'build' && q.tr && !q.tr.includes('\n') ? `<br>Hai sentito: «${esc(q.tr)}»` : '';
       const body = q.t === 'match' ? esc(note) + (q.tip ? ' ' + esc(q.tip) : '')
-        : `Risposta corretta: <b>${esc(correct)}</b>${q.tip ? '<br>' + esc(q.tip) : ''}`;
+        : `Risposta corretta: <b>${esc(correct)}</b>${heard}${q.tip ? '<br>' + esc(q.tip) : ''}`;
       setFoot('ko', { title: q.t === 'match' ? 'Quasi!' : 'Non proprio…', body });
     }
     paintTop();
@@ -280,6 +347,7 @@
   const fmtTime = ms => { const s = Math.round(ms / 1000); return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`; };
 
   function finish() {
+    stopAudio();
     S.phase = 'end';
     const acc = S.firstOk.size / S.total;
     const bonus = isFinal ? 30 : 10;
@@ -335,6 +403,7 @@
   }
 
   function outOfHearts() {
+    stopAudio();
     S.phase = 'end';
     if (S.xp) store.addXp(S.xp);
     const art = isFinal ? 'assets/covers/cover.webp' : `assets/covers/u${unit.n}.webp`;
@@ -358,6 +427,7 @@
   };
 
   document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.code === 'Space') { e.preventDefault(); play(e.shiftKey); return; }
     if (e.metaKey || e.ctrlKey || e.altKey) return;
     if (e.key === 'Enter') {
       if (document.activeElement && document.activeElement.tagName === 'BUTTON' && document.activeElement !== action && S.phase !== 'answer') return;
