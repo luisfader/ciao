@@ -270,4 +270,13 @@ CIAO.units = [
   }
 ];
 
-CIAO.finalAvailable = () => CIAO.units.every(u => u.available);
+/* Sblocco progressivo: un'unità si apre solo quando lo studente ha superato
+   il test finale dell'unità precedente con almeno l'80% (due stelle).
+   L'esame finale si apre dopo aver superato il test dell'ultima unità. */
+CIAO.PASS = 0.8;
+CIAO.unitPassed = n => { const r = CIAO.store && CIAO.store.unit(n); return !!r && r.best >= CIAO.PASS; };
+CIAO.isUnlocked = n => {
+  const u = CIAO.units.find(x => x.n === n);
+  return !!u && u.available && (n === 1 || CIAO.unitPassed(n - 1));
+};
+CIAO.finalAvailable = () => CIAO.units.every(u => u.available) && CIAO.unitPassed(CIAO.units[CIAO.units.length - 1].n);

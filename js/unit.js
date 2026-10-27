@@ -21,9 +21,14 @@
       </div></div></section>`;
 
   // Unità non ancora disponibile
-  if (!unit.available) {
-    app.innerHTML = hero(`<div class="locked-note"><p><b>Questa unità sarà disponibile presto.</b> Intanto puoi lavorare con le unità già aperte.</p>
-      <div class="hero-actions"><a class="btn" href="unit.html?u=1">Vai all’unità 1</a><a class="btn ghost" href="index.html#percorso">Torna al percorso</a></div></div>`);
+  if (!CIAO.isUnlocked(unit.n)) {
+    const prev = unit.n - 1;
+    const r = store.unit(prev);
+    const note = unit.available
+      ? `<p><b>Questa unità è ancora chiusa.</b> Per aprirla devi superare il test finale dell’unità ${prev} con almeno l’${Math.round(CIAO.PASS * 100)}%${r ? ` (il tuo miglior risultato: ${Math.round(r.best * 100)}%)` : ''}.</p>
+      <div class="hero-actions"><a class="btn" href="${CIAO.isUnlocked(prev) ? `quiz.html?u=${prev}` : 'index.html#percorso'}">${CIAO.isUnlocked(prev) ? `Fai il test dell’unità ${prev}` : 'Torna al percorso'}</a><a class="btn ghost" href="index.html#percorso">Il percorso</a></div>`
+      : `<p><b>Questa unità sarà disponibile presto.</b></p><div class="hero-actions"><a class="btn ghost" href="index.html#percorso">Torna al percorso</a></div>`;
+    app.innerHTML = hero(`<div class="locked-note">${note}</div>`);
     return;
   }
 
@@ -80,7 +85,7 @@
       <a class="btn" href="quiz.html?u=${unit.n}">Fai il test</a></div>
     <div class="unit-pager">
       ${unit.n > 1 ? `<a href="unit.html?u=${unit.n - 1}">‹ Unità ${unit.n - 1}</a>` : '<a href="index.html">‹ Il percorso</a>'}
-      ${units[unit.n] && units[unit.n].available ? `<a href="unit.html?u=${unit.n + 1}">Unità ${unit.n + 1}: ${units[unit.n].place} ›</a>` : '<a href="index.html#percorso">Il percorso ›</a>'}
+      ${units[unit.n] && CIAO.isUnlocked(units[unit.n].n) ? `<a href="unit.html?u=${unit.n + 1}">Unità ${unit.n + 1}: ${units[unit.n].place} ›</a>` : '<a href="index.html#percorso">Il percorso ›</a>'}
     </div>`);
 
   // Progressi

@@ -5,9 +5,9 @@
   const param = new URLSearchParams(location.search).get('u') || '1';
   const isFinal = param === 'finale';
   const unit = isFinal ? null : units.find(u => String(u.n) === param) || units[0];
-  if ((isFinal && !CIAO.finalAvailable()) || (!isFinal && !unit.available)) { location.replace(isFinal ? 'index.html#percorso' : `unit.html?u=${unit.n}`); return; }
+  if ((isFinal && !CIAO.finalAvailable()) || (!isFinal && !CIAO.isUnlocked(unit.n))) { location.replace(isFinal ? 'index.html#percorso' : `unit.html?u=${unit.n}`); return; }
   const HEARTS = 5;
-  const PASS = 0.8;
+  const PASS = CIAO.PASS;
 
   const $ = id => document.getElementById(id);
   const main = $('main'), foot = $('foot'), msg = $('msg'), action = $('action'), hint = $('hint');
@@ -364,13 +364,17 @@
     if (!isFinal) {
       store.saveUnit(unit.n, acc);
       const nextU = units.find(u => u.n === unit.n + 1);
+      const passedNow = acc >= PASS;
+      const unlockMsg = passedNow
+        ? (nextU ? `<br><b>Hai sbloccato l’unità ${nextU.n}: ${nextU.place}!</b>` : '<br><b>Hai sbloccato l’esame finale!</b>')
+        : (CIAO.unitPassed(unit.n) ? '' : `<br><b>Per sbloccare ${nextU ? `l’unità ${nextU.n}` : 'l’esame finale'} ti serve almeno l’${Math.round(PASS * 100)}%. Riprova!</b>`);
       main.innerHTML = `<div class="screen">
         <div class="art"><img src="${art}" alt=""></div>
         <h1>Unità ${unit.n} completata!</h1>
-        <p class="lead">${starsHtml(starsFor(acc))}<br>${acc >= 0.95 ? 'Perfetto: non hai sbagliato quasi niente.' : acc >= 0.8 ? 'Ottimo lavoro! Ancora un piccolo sforzo per le tre stelle.' : 'Fatto! Ripassa la grammatica e riprova per migliorare.'}</p>
+        <p class="lead">${starsHtml(starsFor(acc))}<br>${acc >= 0.95 ? 'Perfetto: non hai sbagliato quasi niente.' : acc >= 0.8 ? 'Ottimo lavoro! Ancora un piccolo sforzo per le tre stelle.' : 'Fatto! Ripassa la grammatica e riprova per migliorare.'}${unlockMsg}</p>
         ${stats}
         <div class="actions">
-          ${nextU && nextU.available ? `<a class="btn" href="unit.html?u=${nextU.n}">Vai all’unità ${nextU.n}</a>` : `<a class="btn" href="unit.html?u=${unit.n}">Torna all’unità</a>`}
+          ${nextU && CIAO.isUnlocked(nextU.n) ? `<a class="btn" href="unit.html?u=${nextU.n}">Vai all’unità ${nextU.n}</a>` : !nextU && CIAO.finalAvailable() ? '<a class="btn" href="quiz.html?u=finale">Vai all’esame finale</a>' : `<a class="btn" href="unit.html?u=${unit.n}">Torna all’unità</a>`}
           <button class="btn ghost" id="again">Ripeti il test</button>
           <a class="btn ghost" href="index.html#percorso">Torna al percorso</a>
         </div></div>`;

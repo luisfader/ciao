@@ -13,10 +13,10 @@
   let html = '';
   const off = i => ` style="--o:${[0, 1, 2, 1][i % 4]}"`;
   units.forEach((u, i) => {
-    if (!u.available) {
+    if (!CIAO.isUnlocked(u.n)) {
       html += `<div class="stop locked" aria-disabled="true"${off(i)}>
       <div class="medal">${ring(0)}<img src="assets/covers/u${u.n}.webp" alt="" loading="lazy"><span class="num">${lock}</span></div>
-      <div class="stop-text"><small>Unità ${u.n} · disponibile presto</small><h3>${u.place}</h3><p class="tag">${u.tagline}</p></div></div>`;
+      <div class="stop-text"><small>Unità ${u.n} · ${u.available ? `supera il test dell’unità ${u.n - 1} per aprirla` : 'disponibile presto'}</small><h3>${u.place}</h3><p class="tag">${u.tagline}</p></div></div>`;
       return;
     }
     const allEx = Object.values(CIAO.lessons[u.n] || {}).flat().filter(b => b.ex && CIAO.isGraded(b.ex)).map(b => b.ex.id);
@@ -41,8 +41,8 @@
   } else {
     html += `<div class="stop finale locked" aria-disabled="true"${off(units.length)}>
       <div class="medal">${ring(0)}<div class="finale-badge">${icon.laurel}</div></div>
-      <div class="stop-text"><small>Tutte le unità · disponibile presto</small><h3>Esame finale</h3>
-        <p class="tag">si apre quando tutte le unità saranno pubblicate</p></div></div>`;
+      <div class="stop-text"><small>Tutte le unità · bloccato</small><h3>Esame finale</h3>
+        <p class="tag">si apre quando superi il test dell’unità ${units.length}</p></div></div>`;
   }
   path.innerHTML = html;
 
@@ -72,7 +72,7 @@
 
   // Statistiche e pulsante "continua"
   const s = store.get();
-  const avail = units.filter(u => u.available);
+  const avail = units.filter(u => CIAO.isUnlocked(u.n));
   const streak = store.streak();
   const exIds = avail.flatMap(u => Object.values(CIAO.lessons[u.n] || {}).flat().filter(b => b.ex && CIAO.isGraded(b.ex)).map(b => b.ex.id));
   document.getElementById('stats').innerHTML =
