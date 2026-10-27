@@ -4,7 +4,10 @@
   const app = document.getElementById('app');
   const param = new URLSearchParams(location.search).get('u') || '1';
   const unit = units.find(u => String(u.n) === param) || units[0];
-  const lesson = lessons[unit.n];
+  // Unità senza lezione interattiva: si mostrano la grammatica e il test finale.
+  const fullLesson = !!lessons[unit.n];
+  const lesson = lessons[unit.n] || { D: [{ html: `<div class="gcard">${unit.grammar}</div>` }] };
+  const sections = fullLesson ? unit.sections : unit.sections.filter(s => (lesson[s.id] || []).length);
   document.title = `Unità ${unit.n}: ${unit.place} — Ciao, amore! 2`;
 
   const hero = (extra) => `<section class="unit-hero"><div class="wrap">
@@ -18,8 +21,8 @@
       </div></div></section>`;
 
   // Unità non ancora disponibile
-  if (!unit.available || !lesson) {
-    app.innerHTML = hero(`<div class="locked-note"><p><b>Questa unità sarà disponibile presto.</b> Per ora puoi lavorare con le unità 1 e 2.</p>
+  if (!unit.available) {
+    app.innerHTML = hero(`<div class="locked-note"><p><b>Questa unità sarà disponibile presto.</b> Intanto puoi lavorare con le unità già aperte.</p>
       <div class="hero-actions"><a class="btn" href="unit.html?u=1">Vai all’unità 1</a><a class="btn ghost" href="index.html#percorso">Torna al percorso</a></div></div>`);
     return;
   }
@@ -32,18 +35,18 @@
   let html = hero(`
     <div class="unit-progress"><div class="up-bar"><span id="up-fill"></span></div><span id="up-text"></span></div>
     <div class="hero-actions">
-      <a class="btn" href="#sA">Inizia la lezione</a>
+      <a class="btn" href="#s${sections[0].id}">${fullLesson ? 'Inizia la lezione' : 'Ripassa la grammatica'}</a>
       <a class="btn ghost" href="quiz.html?u=${unit.n}">${t ? 'Ripeti il test finale' : 'Test finale dell’unità'}</a>
       ${t ? `<span class="unit-best">${starsHtml(starsFor(t.best))} test: ${Math.round(t.best * 100)}%</span>` : ''}
     </div>`);
 
   html += `<nav class="secnav" aria-label="Sezioni dell’unità"><div class="wrap">` +
-    unit.sections.map(s => `<a href="#s${s.id}" data-s="${s.id}"><b>${s.id}.</b>${s.title}<span class="sec-dot" aria-hidden="true"></span></a>`).join('') +
+    sections.map(s => `<a href="#s${s.id}" data-s="${s.id}"><b>${s.id}.</b>${s.title}<span class="sec-dot" aria-hidden="true"></span></a>`).join('') +
     `<a href="#test"><b>★</b>Test finale</a></div></nav><div class="wrap lesson-wrap" id="lesson"></div>`;
   app.innerHTML = html;
 
   const wrap = document.getElementById('lesson');
-  unit.sections.forEach(s => {
+  sections.forEach(s => {
     const sec = document.createElement('section');
     sec.className = 'lesson';
     sec.id = 's' + s.id;
@@ -84,7 +87,7 @@
   function paintProgress() {
     const done = CIAO.exStore.doneIn(graded);
     document.getElementById('up-fill').style.width = (graded.length ? done / graded.length * 100 : 0) + '%';
-    document.getElementById('up-text').textContent = `${done} di ${graded.length} esercizi completati`;
+    document.getElementById('up-text').textContent = graded.length ? `${done} di ${graded.length} esercizi completati` : 'Grammatica e test finale';
     document.querySelectorAll('.lesson').forEach(sec => {
       const ids = sec.dataset.ex ? sec.dataset.ex.split(',') : [];
       const c = sec.querySelector('.sec-count');

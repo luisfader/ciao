@@ -22,20 +22,28 @@
     const allEx = Object.values(CIAO.lessons[u.n] || {}).flat().filter(b => b.ex && CIAO.isGraded(b.ex)).map(b => b.ex.id);
     const done = CIAO.exStore.doneIn(allEx);
     const p = store.unit(u.n);
-    const pct = allEx.length ? done / allEx.length : 0;
+    const pct = allEx.length ? done / allEx.length : (p ? p.best : 0);
     html += `<a class="stop ${pct === 1 ? 'done' : ''}" href="unit.html?u=${u.n}"${off(i)}>
       <div class="medal">${ring(pct)}<img src="assets/covers/u${u.n}.webp" alt="" loading="lazy"><span class="num">${u.n}</span></div>
       <div class="stop-text">
         <small>Unità ${u.n} · ${u.focus}</small>
         <h3>${u.place}</h3>
         <p class="tag">${u.tagline}</p>
-        <p class="stop-meta">${done}/${allEx.length} esercizi${p ? ' · test ' + starsHtml(starsFor(p.best)) : ''}</p>
+        <p class="stop-meta">${allEx.length ? `${done}/${allEx.length} esercizi` : 'grammatica e test'}${p ? ' · test ' + starsHtml(starsFor(p.best)) : ''}</p>
       </div></a>`;
   });
-  html += `<div class="stop finale locked" aria-disabled="true"${off(units.length)}>
+  if (CIAO.finalAvailable()) {
+    const f = store.get().final;
+    html += `<a class="stop finale${f ? ' done' : ''}" href="quiz.html?u=finale"${off(units.length)}>
+      <div class="medal">${ring(f ? f.best : 0)}<div class="finale-badge">${icon.laurel}</div></div>
+      <div class="stop-text"><small>Tutte le unità</small><h3>Esame finale</h3>
+        <p class="tag">${f ? 'test ' + starsHtml(starsFor(f.best)) : 'metti alla prova tutto quello che hai imparato'}</p></div></a>`;
+  } else {
+    html += `<div class="stop finale locked" aria-disabled="true"${off(units.length)}>
       <div class="medal">${ring(0)}<div class="finale-badge">${icon.laurel}</div></div>
       <div class="stop-text"><small>Tutte le unità · disponibile presto</small><h3>Esame finale</h3>
         <p class="tag">si apre quando tutte le unità saranno pubblicate</p></div></div>`;
+  }
   path.innerHTML = html;
 
   // Il "canale" che collega le tappe

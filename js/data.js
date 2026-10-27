@@ -60,7 +60,7 @@ CIAO.units = [
       Con il passato prossimo il participio si accorda: <i>Ho visto Maria → L’ho vista.</i></p>`
   },
   {
-    n: 3, place: 'Roma', cover: 26,
+    n: 3, place: 'Roma', cover: 26, available: true,
     temi: ['Quando ero bambino', 'Gli animali', 'L’imperfetto'],
     tagline: 'tutte le strade portano a roma, la mia porta a te',
     focus: 'l’imperfetto',
@@ -87,7 +87,7 @@ CIAO.units = [
       (<i>La casa era grande</i>) e <b>azioni in corso</b> nel passato (<i>Mentre leggevo, è arrivato Marco</i>).</p>`
   },
   {
-    n: 4, place: 'Firenze', cover: 36,
+    n: 4, place: 'Firenze', cover: 36, available: true,
     temi: ['Viaggiare', 'Il modo condizionale', 'Firenze, città d’arte'],
     tagline: 'a firenze vorrei perdermi, ma solo con te',
     focus: 'il condizionale',
@@ -112,7 +112,7 @@ CIAO.units = [
       un <b>consiglio</b> (<i>Dovresti studiare di più</i>) e una <b>possibilità</b> (<i>Sarebbe bello viaggiare</i>).</p>`
   },
   {
-    n: 5, place: 'Pisa, Siena e Volterra', cover: 46,
+    n: 5, place: 'Pisa, Siena e Volterra', cover: 46, available: true,
     temi: ['Viaggiare', 'Il modo condizionale', 'Il verbo volere all’imperfetto', 'I misteri della Toscana'],
     tagline: 'anche la torre di pisa si inclina quando passi tu',
     focus: 'volere e sapere all’imperfetto',
@@ -137,7 +137,7 @@ CIAO.units = [
       <p>Sapere al presente: so, sai, sa, sappiamo, sapete, sanno.</p>`
   },
   {
-    n: 6, place: 'Milano', cover: 56,
+    n: 6, place: 'Milano', cover: 56, available: true,
     temi: ['Il teatro', 'Norme di comportamento', 'La moda italiana', 'Milano'],
     tagline: 'a teatro guardavo il palco, ma vedevo solo te',
     focus: 'l’imperativo',
@@ -164,7 +164,7 @@ CIAO.units = [
       <p>Irregolari (tu): va’/vai, da’/dai, fa’/fai, sta’/stai, di’.</p>`
   },
   {
-    n: 7, place: 'La cucina italiana', cover: 68,
+    n: 7, place: 'La cucina italiana', cover: 68, available: true,
     temi: ['La cucina italiana', 'Il cibo e la cultura', 'Come preparare la pasta', 'L’imperativo'],
     tagline: 'aggiungi un pizzico d’amore e mescola piano piano',
     focus: 'l’imperativo irregolare',
@@ -191,7 +191,7 @@ CIAO.units = [
       <p>Negativo (tu): <b>non + infinito</b> — <i>Non mangiare! Non andare via!</i></p>`
   },
   {
-    n: 8, place: 'Torino', cover: 78,
+    n: 8, place: 'Torino', cover: 78, available: true,
     temi: ['La salute', 'Fare sport', 'In giro per Torino', 'Azioni in corso'],
     tagline: 'torino ha il bicerin, io ho la tua dolcezza',
     focus: 'dovere, stare + gerundio',
@@ -214,7 +214,7 @@ CIAO.units = [
       <p>devo, devi, deve, dobbiamo, dovete, devono — <i>Deve riposare di più. Non dovete fumare.</i></p>`
   },
   {
-    n: 9, place: 'L’amore', cover: 88,
+    n: 9, place: 'L’amore', cover: 88, available: true,
     temi: ['L’amore', 'Il congiuntivo', 'Il romanticismo'],
     tagline: 'spero che tu sia felice, soprattutto con me',
     focus: 'il congiuntivo presente',
@@ -241,7 +241,7 @@ CIAO.units = [
       <p>✗ <i>Penso che lui ama</i> → ✓ <i>Penso che lui ami</i></p>`
   },
   {
-    n: 10, place: 'La nuova casa in Toscana', cover: 98,
+    n: 10, place: 'La nuova casa in Toscana', cover: 98, available: true,
     temi: ['La casa', 'Parlare di piani e del futuro', 'Fatti interessanti sull’Italia'],
     tagline: 'domani ti amerò ancora di più',
     focus: 'il futuro semplice',

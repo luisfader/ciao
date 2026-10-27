@@ -2,10 +2,10 @@
 
 Sitio web del manual de italiano **Ciao, amore! 2** de Roberto Fader (nivel intermedio).
 
-- **Portada** con el recorrido de las 10 unidades y el progreso del alumno. Por ahora solo están abiertas las unidades 1 y 2; las demás y el examen final aparecen como «disponibile presto».
+- **Portada** con el recorrido de las 10 unidades y el progreso del alumno. Todas las unidades y el examen final están abiertos. Las unidades 1 y 2 tienen la lección interactiva completa; las unidades 3 a 10, por ahora, muestran su gramática y su test final hasta que se añada su lección en `js/lessons.js`.
 - **Lección interactiva por unidad**: textos y diálogos con las ilustraciones del manual y, en la misma página, los ejercicios: arrastrar palabras a los huecos, emparejar arrastrando, escribir, elegir dentro de la frase, verdadero/falso, elección múltiple, clasificar en columnas y escritura libre con ejemplo. Cada ejercicio se corrige al momento y tiene «Mostra la soluzione».
 - **Test final de cada unidad** estilo Duolingo: 5 corazones, los errores vuelven al final, XP y estrellas. Incluye ejercicios de escucha (escribir lo que oyes, elegir la frase, ordenar, diálogos) con botón de velocidad lenta y «Non posso ascoltare ora». Los audios van en `assets/audio/` con los nombres de `assets/audio/TESTI.md`; si falta un archivo, ese ejercicio no aparece.
-- **Examen final** (ya programado): se activa cuando todas las unidades tengan `available: true`.
+- **Examen final**: abierto, porque todas las unidades tienen `available: true`.
 
 El progreso se guarda en el navegador del alumno (localStorage); no hace falta registro.
 
